@@ -3,36 +3,48 @@
   "version": "1.0.0",
   "description": "Node JS Lohika Course",
   "scripts": {
-    "start": "nodemon ./buildScripts/srcServer.js",
+    "prestart": "babel-node ./buildScripts/startMessage.js",
+    "start": "nodemon --exec babel-node ./buildScripts/srcServer.js",
     "test": "ava",
     "eslint": "./node_modules/.bin/eslint src test buildScripts",
+    "security": "nsp check",
+    "check": "npm-run-all --parallel eslint security test",
     "db:start": "docker run --name mysql-server -e MYSQL_ROOT_PASSWORD=qwerty -d mysql:latest",
     "db:stop": "docker stop mysql-server",
     "prepush": "npm run test",
-    "precommit": "npm run eslint"
+    "precommit": "npm run check",
+    "localtunnel": "lt --port 3000 --subdomain stas",
+    "share": "npm-run-all --parallel start localtunnel"
   },
   "author": "Stanislav Parkhomenko",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "chalk": "^2.3.0",
     "compression": "^1.7.1",
     "express": "^4.16.2",
     "lodash": "^4.17.4",
     "moment": "^2.19.4",
     "morgan": "^1.9.0",
     "mysql2": "^1.5.1",
+    "open": "0.0.5",
     "path": "^0.12.7",
     "sequelize": "^4.28.0",
-    "winston": "^2.4.0",
-    "open": "0.0.5"
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "ava": "^0.24.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
     "eslint": "^4.13.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "husky": "^0.14.3",
-    "nodemon": "^1.12.6"
+    "nodemon": "^1.12.6",
+    "npm-run-all": "^4.1.2"
   },
   "nodemonConfig": {
     "ignore": [
