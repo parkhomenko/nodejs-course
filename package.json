@@ -4,8 +4,8 @@
   "description": "Node JS Lohika Course",
   "scripts": {
     "start": "nodemon ./buildScripts/srcServer.js",
-    "test": "",
-    "eslint": "./node_modules/.bin/eslint src buildScripts",
+    "test": "ava",
+    "eslint": "./node_modules/.bin/eslint src test buildScripts",
     "db:start": "docker run --name mysql-server -e MYSQL_ROOT_PASSWORD=qwerty -d mysql:latest",
     "db:stop": "docker stop mysql-server",
     "prepush": "npm run test",
