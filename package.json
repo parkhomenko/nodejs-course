@@ -1,0 +1,44 @@
+{
+  "name": "node-js-course",
+  "version": "1.0.0",
+  "description": "Node JS Lohika Course",
+  "scripts": {
+    "start": "nodemon ./buildScripts/srcServer.js",
+    "test": "",
+    "eslint": "./node_modules/.bin/eslint src buildScripts",
+    "db:start": "docker run --name mysql-server -e MYSQL_ROOT_PASSWORD=qwerty -d mysql:latest",
+    "db:stop": "docker stop mysql-server",
+    "prepush": "npm run test",
+    "precommit": "npm run eslint"
+  },
+  "author": "Stanislav Parkhomenko",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "express": "^4.16.2",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.4",
+    "morgan": "^1.9.0",
+    "mysql2": "^1.5.1",
+    "path": "^0.12.7",
+    "sequelize": "^4.28.0",
+    "winston": "^2.4.0",
+    "open": "0.0.5"
+  },
+  "devDependencies": {
+    "ava": "^0.24.0",
+    "eslint": "^4.13.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "husky": "^0.14.3",
+    "nodemon": "^1.12.6"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "docs/*"
+    ],
+    "delay": "2500"
+  }
+}
