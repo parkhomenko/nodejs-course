@@ -2,7 +2,7 @@
 npm install
 
 ### Docker tasks
-npm db:start - Starts mysql container
+npm db:start - Starts mysql container  
 npm db:stop - Stops mysql container
 
 ### Start dev server
