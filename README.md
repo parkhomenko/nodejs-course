@@ -16,3 +16,6 @@ npm run check
 
 ### Share a development site:
 npm run share
+
+### Swagger docs
+http://localhost:3000/api-docs/
