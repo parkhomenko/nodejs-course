@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Node JS Lohika Course",
   "scripts": {
-    "prestart": "node ./src/startMessage.js",
-    "start": "nodemon ./src/app.js",
+    "prestart": "node ./src/server/startMessage.js",
+    "start": "nodemon ./src/server/dev.js",
     "test": "ava",
     "eslint": "./node_modules/.bin/eslint src test",
     "security": "nsp check",
@@ -14,7 +14,8 @@
     "prepush": "npm run test",
     "precommit": "npm run check",
     "localtunnel": "lt --port 3000 --subdomain stas",
-    "share": "npm-run-all --parallel start localtunnel"
+    "share": "npm-run-all --parallel start localtunnel",
+    "prod": "node ./src/server/prod.js"
   },
   "author": "Stanislav Parkhomenko",
   "license": "MIT",
