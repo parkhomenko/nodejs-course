@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path');
-const open = require('open');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const morgan = require('morgan');
 const fs = require('fs');
 const rfs = require('rotating-file-stream');
+const winston = require('winston');
+const http = require('http');
 
 const readme = require('../routes/readme');
 
@@ -20,6 +21,12 @@ if (!fs.existsSync(logDirectory)) {
 const accessLogStream = rfs('access.log', {
   interval: '1d',
   path: logDirectory,
+});
+
+winston.configure({
+  transports: [
+    new (winston.transports.File)({ filename: path.join(__dirname, '../../logs/app.log') }),
+  ],
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,10 +56,6 @@ app.use((err, req, res) => {
     });
 });
 
-app.listen(port, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    open(`http://localhost:${port}`);
-  }
-});
+const httpServer = http.createServer(app);
+httpServer.listen(port);
+winston.info('Server has been started in production mode...');

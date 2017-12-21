@@ -4,6 +4,7 @@ const open = require('open');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const winston = require('winston');
 const swaggerJSDoc = require('swagger-jsdoc');
 
 const readme = require('../routes/readme');
@@ -63,7 +64,7 @@ app.use((err, req, res) => {
 
 app.listen(port, (err) => {
   if (err) {
-    console.log(err);
+    winston.log('error', err);
   } else {
     open(`http://localhost:${port}`);
   }
