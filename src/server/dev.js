@@ -40,7 +40,6 @@ app.use('/api', readme);
 
 app.get('/swagger.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  console.log(swaggerSpec);
   res.send(swaggerSpec);
 });
 
