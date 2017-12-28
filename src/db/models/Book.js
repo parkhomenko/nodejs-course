@@ -4,7 +4,7 @@ const BookRate = require('./BookRate');
 
 const Sequelize = require('sequelize');
 
-const Book = sequelize.define('book', {
+const Book = sequelize.define('books', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   title: Sequelize.STRING,
   cover: Sequelize.STRING,
