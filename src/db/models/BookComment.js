@@ -2,18 +2,20 @@ const sequelize = require('../../data/setup');
 const Book = require('./Book');
 const User = require('./User');
 
+const Sequelize = require('sequelize');
+
 const BookRate = sequelize.define('book_rates', {
-  id: { type: sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  comment: sequelize.STRING,
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+  comment: Sequelize.STRING,
   book_id: {
-    type: sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     references: {
       model: Book,
       key: 'id',
     },
   },
   user_id: {
-    type: sequelize.INTEGER,
+    type: Sequelize.INTEGER,
     references: {
       model: User,
       key: 'id',

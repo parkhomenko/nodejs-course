@@ -2,7 +2,12 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize('library', 'root', 'qwerty', {
   host: 'localhost',
+  port: 3307,
   dialect: 'mysql',
+
+  define: {
+    timestamps: false,
+  },
 
   pool: {
     max: 5,

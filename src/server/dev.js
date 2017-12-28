@@ -8,6 +8,7 @@ const winston = require('winston');
 const swaggerJSDoc = require('swagger-jsdoc');
 
 const readme = require('../routes/readme');
+const books = require('../routes/books');
 
 const port = 3000;
 const app = express();
@@ -37,6 +38,7 @@ app.use(morgan('combined'));
 app.use(express.static(path.join(__dirname, '../../static')));
 
 app.use('/api', readme);
+app.use('/books', books);
 
 app.get('/swagger.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
@@ -47,6 +49,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../../static/index.html'));
 });
 
+/*
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
@@ -60,6 +63,7 @@ app.use((err, req, res) => {
       message: err,
     });
 });
+*/
 
 app.listen(port, (err) => {
   if (err) {

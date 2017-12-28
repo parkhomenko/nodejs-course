@@ -1,9 +1,11 @@
 const sequelize = require('../../data/setup');
 
+const Sequelize = require('sequelize');
+
 const Author = sequelize.define('author', {
-  id: { type: sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  name: sequelize.STRING,
-  dateofbirth: sequelize.DATE,
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+  name: Sequelize.STRING,
+  dateofbirth: Sequelize.DATE,
 });
 
 module.exports = Author;

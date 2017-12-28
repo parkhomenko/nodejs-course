@@ -6,6 +6,7 @@
     "start": "nodemon ./src/server/dev.js",
     "test": "ava",
     "eslint": "./node_modules/.bin/eslint src test",
+    "eslint:fix": "./node_modules/.bin/eslint src test --fix",
     "security": "nsp check",
     "check": "npm-run-all --parallel eslint security test",
     "db:start": "npm-run-all db:start:container db:migrate db:seed",
