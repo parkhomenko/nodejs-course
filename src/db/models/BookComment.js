@@ -4,7 +4,7 @@ const User = require('./User');
 
 const Sequelize = require('sequelize');
 
-const BookRate = sequelize.define('book_rates', {
+const BookComment = sequelize.define('book_comments', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   comment: Sequelize.STRING,
   book_id: {
@@ -23,4 +23,6 @@ const BookRate = sequelize.define('book_rates', {
   },
 });
 
-module.exports = BookRate;
+BookComment.hasOne(Book);
+
+module.exports = BookComment;

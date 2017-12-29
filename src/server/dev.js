@@ -9,6 +9,7 @@ const swaggerJSDoc = require('swagger-jsdoc');
 
 const readme = require('../routes/readme');
 const books = require('../routes/books');
+const comments = require('../routes/comments');
 
 const port = 3000;
 const app = express();
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, '../../static')));
 
 app.use('/api', readme);
 app.use('/books', books);
+app.use('/comments', comments);
 
 app.get('/swagger.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
