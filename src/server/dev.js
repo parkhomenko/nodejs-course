@@ -51,7 +51,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../../static/index.html'));
 });
 
-/*
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
@@ -65,7 +64,6 @@ app.use((err, req, res) => {
       message: err,
     });
 });
-*/
 
 app.listen(port, (err) => {
   if (err) {

@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /v1/readme:
+ * /api/v1/readme:
  *   get:
  *     description: Returns the text of the README.md file
  *     produces:
