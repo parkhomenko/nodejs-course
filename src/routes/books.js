@@ -71,7 +71,7 @@ router.get('/most-commented/:limit', (req, res) => {
 
 /**
  * @swagger
- * /books/{bookId}:
+ * /books/by-id/{bookId}:
  *   get:
  *     description: Gets a book by ID
  *     parameters:
@@ -87,7 +87,7 @@ router.get('/most-commented/:limit', (req, res) => {
  *       200:
  *         description: A json object with information about a chosen book
  */
-router.get('/:bookId', (req, res) => {
+router.get('/by-id/:bookId', (req, res) => {
   const { bookId } = req.params;
   Book.findById(bookId).then((book) => {
     res.send(book);
@@ -123,6 +123,51 @@ router.get('/by-author/:author', (req, res) => {
       attributes: [],
     }],
     attributes: ['id', 'title'],
+  }).then((books) => {
+    res.send(books);
+  });
+});
+
+/**
+ * @swagger
+ * /books/by-rate:
+ *   get:
+ *     description: Gets books by rate
+ *     parameters:
+ *      - in: query
+ *        name: from
+ *        schema:
+ *          type: float
+ *        required: true
+ *        description: Starting rate
+ *      - in: query
+ *        name: to
+ *        schema:
+ *          type: float
+ *        required: true
+ *        description: Ending rate
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: A json array with information about books by rate
+ */
+router.get('/by-rate', (req, res) => {
+  const { from, to } = req.query;
+  Book.findAll({
+    include: [{
+      model: BookRate,
+      attributes: [],
+    }],
+    attributes: ['id', 'title', [Sequelize.fn('avg', Sequelize.col('book_rates.rate')), 'rate_avg']],
+    group: ['books.id', 'books.title'],
+    having: Sequelize.where(Sequelize.fn('avg', Sequelize.col('book_rates.rate')), {
+      $gte: parseFloat(from),
+      $lte: parseFloat(to),
+    }),
+    order: [
+      Sequelize.fn('avg', Sequelize.col('book_rates.rate')),
+    ],
   }).then((books) => {
     res.send(books);
   });
