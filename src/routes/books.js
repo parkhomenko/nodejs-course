@@ -1,10 +1,7 @@
 const express = require('express');
-const Book = require('../db/models/Book');
-const Author = require('../db/models/Author');
-const BookRate = require('../db/models/BookRate');
-const BookComment = require('../db/models/BookComment');
-
-const Sequelize = require('sequelize');
+const {
+  Book, Author, BookRate, BookComment, Sequelize,
+} = require('../db/models/Models');
 
 const router = express.Router();
 
@@ -89,7 +86,7 @@ router.get('/most-commented/:limit', (req, res) => {
  */
 router.get('/by-id/:bookId', (req, res) => {
   const { bookId } = req.params;
-  Book.findById(bookId).then((book) => {
+  Book.findById(bookId, { attributes: ['id', 'title', 'cover'] }).then((book) => {
     res.send(book);
   });
 });
