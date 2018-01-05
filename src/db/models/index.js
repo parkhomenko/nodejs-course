@@ -26,47 +26,34 @@ const User = sequelize.define('user', {
   dateofbirth: Sequelize.DATE,
 });
 
-const Book = sequelize.define('books', {
-  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  title: Sequelize.STRING,
-  cover: Sequelize.STRING,
-});
-
 const Author = sequelize.define('authors', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   name: Sequelize.STRING,
   dateofbirth: Sequelize.DATE,
 });
 
+const Book = sequelize.define('books', {
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+  title: Sequelize.STRING,
+  cover: Sequelize.STRING,
+});
+
 const BookRate = sequelize.define('book_rates', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   rate: Sequelize.INTEGER,
-  user_id: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: User,
-      key: 'id',
-    },
-  },
 });
 
 const BookComment = sequelize.define('book_comments', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   comment: Sequelize.STRING,
-  user_id: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: User,
-      key: 'id',
-    },
-  },
 });
 
 Author.hasMany(Book, { foreignKey: 'book_id', sourceKey: 'id' });
-Book.hasOne(Author);
-Author.belongsTo(Book, { sourceKey: 'book_id' });
+Book.belongsTo(Author, { foreignKey: 'author_id', as: 'authors' });
 Book.hasMany(BookRate, { foreignKey: 'book_id', sourceKey: 'id' });
 Book.hasMany(BookComment, { foreignKey: 'book_id', sourceKey: 'id' });
+BookComment.belongsTo(Book, { foreignKey: 'book_id' });
+BookComment.belongsTo(User, { foreignKey: 'user_id' });
 
 const db = {};
 

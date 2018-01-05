@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const compression = require('compression');
 const morgan = require('morgan');
 const fs = require('fs');
@@ -31,6 +32,7 @@ winston.configure({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(fileUpload());
 app.use(compression());
 app.use(morgan('combined', { stream: accessLogStream }));
 

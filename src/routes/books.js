@@ -1,15 +1,39 @@
 const express = require('express');
+const path = require('path');
 const {
   Book, Author, BookRate, BookComment, Sequelize,
-} = require('../db/models/Models');
+} = require('../db/models');
 
 const router = express.Router();
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Books
+ *     description: Operations with books
+ */
+
+/**
+ * @swagger
+ * definitions:
+ *   Book:
+ *     required:
+ *       - title
+ *       - author_id
+ *     properties:
+ *       title:
+ *         type: string
+ *       author_id:
+ *         type: integer
+ */
 
 /**
  * @swagger
  * /books:
  *   get:
  *     description: Returns all the books with their rates
+ *     tags:
+ *       - Books
  *     produces:
  *       - application/json
  *     responses:
@@ -31,9 +55,153 @@ router.get('/', (req, res) => {
 
 /**
  * @swagger
+ * /books:
+ *   post:
+ *     summary: Add a new book
+ *     tags:
+ *       - Books
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: book
+ *         description: The book to create
+ *         schema:
+ *           $ref: '#/definitions/Book'
+ *     responses:
+ *       201:
+ *         description: Book created
+ */
+router.post('/', (req, res) => {
+  const { title, authorId } = req.body;
+  Book.create({
+    title,
+    author_id: authorId,
+  }).then(() => {
+    res.status(201).send('Book created successfully');
+  });
+});
+
+/**
+ * @swagger
+ * /books/cover/{bookId}:
+ *   post:
+ *     summary: Uploads a cover for a specified book
+ *     tags:
+ *       - Books
+ *     consumes:
+ *       - multipart/form-data
+ *     parameters:
+ *       - in: formData
+ *         name: cover
+ *         type: file
+ *         required: true
+ *         description: The book cover to upload
+ *       - in: path
+ *         name: bookId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Numeric ID of the book
+ *     responses:
+ *       201:
+ *         description: Cover uploaded
+ */
+router.post('/cover/:bookId', (req, res) => {
+  const { bookId } = req.params;
+
+  if (!req.files) {
+    return res.status(400).send('No files were uploaded');
+  }
+
+  Book.findById(bookId, { attributes: ['id', 'title', 'cover'] }).then((book) => {
+    if (book === null) {
+      return res.status(400).send('No book has been found');
+    }
+
+    const { cover } = req.files;
+
+    return book.update({ cover: cover.name }, { fields: ['cover'] }).then(() => {
+      cover.mv(path.join(__dirname, '../../images/covers', cover.name), (error) => {
+        if (error) {
+          return res.status(500).send(error);
+        }
+        return res.status(201).send('File uploaded!');
+      });
+    }).catch(error => res.status(500).send(error));
+  });
+
+  return 0;
+});
+
+/**
+ * @swagger
+ * /books:
+ *   put:
+ *     summary: Edits a book
+ *     tags:
+ *       - Books
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: book
+ *         description: The book to edit
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *             title:
+ *               type: string
+ *             author_id:
+ *               type: integer
+ *     responses:
+ *       201:
+ *         description: Book created
+ */
+router.put('/', (req, res) => {
+  const { id, title, authorId } = req.body;
+  Book.update(
+    { title, author_id: authorId },
+    { where: { id } },
+  ).then(() => {
+    res.status(201).send('Book updated successfully');
+  });
+});
+
+/**
+ * @swagger
+ * /books/{bookId}:
+ *   delete:
+ *     summary: Deletes a book by ID
+ *     tags:
+ *       - Books
+ *     parameters:
+ *      - in: path
+ *        name: bookId
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: Numeric ID of the book to delete
+ *     responses:
+ *       204:
+ *         description: Book deleted
+ */
+router.delete('/:bookId', (req, res) => {
+  const { bookId } = req.params;
+  Book.findById(bookId, { attributes: ['id'] }).then(book => book.destroy()).then(() => {
+    res.status(204).send('Book deleted successfully');
+  });
+});
+
+/**
+ * @swagger
  * /books/most-commented/{limit}:
  *   get:
  *     description: Gets most commented books
+ *     tags:
+ *       - Books
  *     parameters:
  *      - in: path
  *        name: limit
@@ -71,6 +239,8 @@ router.get('/most-commented/:limit', (req, res) => {
  * /books/by-id/{bookId}:
  *   get:
  *     description: Gets a book by ID
+ *     tags:
+ *       - Books
  *     parameters:
  *      - in: path
  *        name: bookId
@@ -96,6 +266,8 @@ router.get('/by-id/:bookId', (req, res) => {
  * /books/by-author/{author}:
  *   get:
  *     description: Gets books by author
+ *     tags:
+ *       - Books
  *     parameters:
  *      - in: path
  *        name: author
@@ -114,6 +286,7 @@ router.get('/by-author/:author', (req, res) => {
   Book.findAll({
     include: [{
       model: Author,
+      as: 'authors',
       where: {
         name: author,
       },
@@ -130,6 +303,8 @@ router.get('/by-author/:author', (req, res) => {
  * /books/by-rate:
  *   get:
  *     description: Gets books by rate
+ *     tags:
+ *       - Books
  *     parameters:
  *      - in: query
  *        name: from

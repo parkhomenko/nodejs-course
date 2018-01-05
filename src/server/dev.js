@@ -3,12 +3,14 @@ const path = require('path');
 const open = require('open');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const winston = require('winston');
 const swaggerJSDoc = require('swagger-jsdoc');
 
 const readme = require('../routes/readme');
 const books = require('../routes/books');
+const authors = require('../routes/authors');
 const comments = require('../routes/comments');
 
 const port = 3000;
@@ -34,12 +36,14 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(fileUpload());
 app.use(morgan('combined'));
 
 app.use(express.static(path.join(__dirname, '../../static')));
 
 app.use('/api', readme);
 app.use('/books', books);
+app.use('/authors', authors);
 app.use('/comments', comments);
 
 app.get('/swagger.json', (req, res) => {
