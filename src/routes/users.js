@@ -30,7 +30,8 @@ const router = express.Router();
  *       avatar:
  *         type: string
  *       dateofbirth:
- *         type: date
+ *         type: string
+ *         format: date
  */
 
 /**
@@ -120,6 +121,85 @@ router.post('/avatar/:userId', (req, res) => {
         return res.status(201).send('File uploaded!');
       });
     }).catch(error => res.status(500).send(error));
+  });
+});
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Add a new user
+ *     tags:
+ *       - Users
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: user
+ *         description: The user to create
+ *         schema:
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       201:
+ *         description: User created
+ */
+router.post('/', (req, res) => {
+  const {
+    name, email, password, avatar, dateofbirth,
+  } = req.body;
+  User.create({
+    name,
+    email,
+    password,
+    avatar,
+    dateofbirth,
+  }).then(() => {
+    res.status(201).send('User created successfully');
+  });
+});
+
+/**
+ * @swagger
+ * /users:
+ *   put:
+ *     summary: Edits a user
+ *     tags:
+ *       - Users
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: user
+ *         description: The user to edit
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *             name:
+ *               type: string
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *             dateofbirth:
+ *               type: string
+ *               format: date
+ *     responses:
+ *       201:
+ *         description: User created
+ */
+router.put('/', (req, res) => {
+  const {
+    id, name, email, password, dateofbirth,
+  } = req.body;
+  User.update(
+    {
+      name, email, password, dateofbirth,
+    },
+    { where: { id } },
+  ).then(() => {
+    res.status(201).send('User updated successfully');
   });
 });
 
