@@ -17,7 +17,7 @@ const sequelize = new Sequelize('library', 'root', 'qwerty', {
   },
 });
 
-const User = sequelize.define('user', {
+const User = sequelize.define('users', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   name: Sequelize.STRING,
   email: Sequelize.STRING,
@@ -54,6 +54,9 @@ Book.hasMany(BookRate, { foreignKey: 'book_id', sourceKey: 'id' });
 Book.hasMany(BookComment, { foreignKey: 'book_id', sourceKey: 'id' });
 BookComment.belongsTo(Book, { foreignKey: 'book_id' });
 BookComment.belongsTo(User, { foreignKey: 'user_id' });
+BookRate.belongsTo(Book, { foreignKey: 'book_id' });
+BookRate.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(BookComment, { foreignKey: 'user_id', sourceKey: 'id' });
 
 const db = {};
 

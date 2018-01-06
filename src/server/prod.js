@@ -10,6 +10,11 @@ const winston = require('winston');
 const http = require('http');
 
 const readme = require('../routes/readme');
+const books = require('../routes/books');
+const authors = require('../routes/authors');
+const comments = require('../routes/comments');
+const rates = require('../routes/rates');
+const users = require('../routes/users');
 
 const port = 5000;
 const app = express();
@@ -39,6 +44,11 @@ app.use(morgan('combined', { stream: accessLogStream }));
 app.use(express.static(path.join(__dirname, '../../static')));
 
 app.use('/api', readme);
+app.use('/books', books);
+app.use('/authors', authors);
+app.use('/comments', comments);
+app.use('/rates', rates);
+app.use('/users', users);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../../static/index.html'));

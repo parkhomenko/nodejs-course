@@ -12,6 +12,8 @@ const readme = require('../routes/readme');
 const books = require('../routes/books');
 const authors = require('../routes/authors');
 const comments = require('../routes/comments');
+const rates = require('../routes/rates');
+const users = require('../routes/users');
 
 const port = 3000;
 const app = express();
@@ -45,6 +47,8 @@ app.use('/api', readme);
 app.use('/books', books);
 app.use('/authors', authors);
 app.use('/comments', comments);
+app.use('/rates', rates);
+app.use('/users', users);
 
 app.get('/swagger.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');

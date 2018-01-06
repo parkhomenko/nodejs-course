@@ -16,14 +16,14 @@ const router = express.Router();
  *   Comment:
  *     required:
  *       - comment
- *       - book_id
- *       - user_id
+ *       - bookId
+ *       - userId
  *     properties:
  *       comment:
  *         type: string
- *       book_id:
+ *       bookId:
  *         type: integer
- *       user_id:
+ *       userId:
  *         type: integer
  */
 
@@ -53,8 +53,8 @@ router.get('/:bookId', (req, res) => {
     where: {
       book_id: bookId,
     },
-  }).then((book) => {
-    res.send(book);
+  }).then((comment) => {
+    res.send(comment);
   });
 });
 

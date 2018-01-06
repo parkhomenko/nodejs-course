@@ -114,7 +114,7 @@ router.post('/cover/:bookId', (req, res) => {
     return res.status(400).send('No files were uploaded');
   }
 
-  Book.findById(bookId, { attributes: ['id', 'title', 'cover'] }).then((book) => {
+  return Book.findById(bookId, { attributes: ['id', 'title', 'cover'] }).then((book) => {
     if (book === null) {
       return res.status(400).send('No book has been found');
     }
@@ -130,8 +130,6 @@ router.post('/cover/:bookId', (req, res) => {
       });
     }).catch(error => res.status(500).send(error));
   });
-
-  return 0;
 });
 
 /**
