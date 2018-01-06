@@ -61,14 +61,12 @@ BookRate.belongsTo(Book, { foreignKey: 'book_id' });
 BookRate.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(BookComment, { foreignKey: 'user_id', sourceKey: 'id' });
 
-const db = {};
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-db.User = User;
-db.Author = Author;
-db.Book = Book;
-db.BookRate = BookRate;
-db.BookComment = BookComment;
-
-module.exports = db;
+module.exports = {
+  sequelize,
+  Sequelize,
+  User,
+  Author,
+  Book,
+  BookRate,
+  BookComment,
+};

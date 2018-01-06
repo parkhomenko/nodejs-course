@@ -234,7 +234,7 @@ router.get('/most-commented/:limit', (req, res) => {
 
 /**
  * @swagger
- * /books/by-id/{bookId}:
+ * /books/{bookId}:
  *   get:
  *     description: Gets a book by ID
  *     tags:
@@ -252,7 +252,7 @@ router.get('/most-commented/:limit', (req, res) => {
  *       200:
  *         description: A json object with information about a chosen book
  */
-router.get('/by-id/:bookId', (req, res) => {
+router.get('/:bookId', (req, res) => {
   const { bookId } = req.params;
   Book.findById(bookId, { attributes: ['id', 'title', 'cover'] }).then((book) => {
     res.send(book);
@@ -322,7 +322,7 @@ router.get('/by-author/:author', (req, res) => {
  *       200:
  *         description: A json array with information about books by rate
  */
-router.get('/by-rate', (req, res) => {
+router.get('/sorted/by-rate', (req, res) => {
   const { from, to } = req.query;
   Book.findAll({
     include: [{
