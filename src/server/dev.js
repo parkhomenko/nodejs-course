@@ -8,6 +8,9 @@ const morgan = require('morgan');
 const winston = require('winston');
 const swaggerJSDoc = require('swagger-jsdoc');
 
+const passport = require('passport');
+
+const login = require('../routes/login');
 const readme = require('../routes/readme');
 const books = require('../routes/books');
 const authors = require('../routes/authors');
@@ -35,6 +38,7 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options);
 
+app.use(passport.initialize());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -43,6 +47,7 @@ app.use(morgan('combined'));
 
 app.use(express.static(path.join(__dirname, '../../static')));
 
+app.use('/login', login);
 app.use('/api', readme);
 app.use('/books', books);
 app.use('/authors', authors);
