@@ -8,7 +8,7 @@ const morgan = require('morgan');
 const winston = require('winston');
 const swaggerJSDoc = require('swagger-jsdoc');
 
-const passport = require('passport');
+const passport = require('../auth');
 
 const login = require('../routes/login');
 const readme = require('../routes/readme');

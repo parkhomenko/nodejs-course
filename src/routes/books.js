@@ -41,7 +41,7 @@ const router = express.Router();
  *       200:
  *         description: A json array with books
  */
-router.get('/', requireRole(), (req, res) => {
+router.get('/', requireRole('default'), (req, res) => {
   Book.findAll({
     include: [{
       model: BookRate,
