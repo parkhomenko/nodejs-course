@@ -3,7 +3,7 @@ const path = require('path');
 const {
   Book, Author, BookRate, BookComment, Sequelize,
 } = require('../db/models');
-const requireRole = require('../auth/permissions');
+const { requireRole } = require('../auth');
 
 const router = express.Router();
 
@@ -73,7 +73,7 @@ router.get('/', requireRole('default'), (req, res) => {
  *       201:
  *         description: Book created
  */
-router.post('/', (req, res) => {
+router.post('/', requireRole('admin'), (req, res) => {
   const { title, authorId } = req.body;
   Book.create({
     title,
@@ -108,7 +108,7 @@ router.post('/', (req, res) => {
  *       201:
  *         description: Cover uploaded
  */
-router.post('/cover/:bookId', (req, res) => {
+router.post('/cover/:bookId', requireRole('admin'), (req, res) => {
   const { bookId } = req.params;
 
   if (!req.files) {
@@ -159,7 +159,7 @@ router.post('/cover/:bookId', (req, res) => {
  *       201:
  *         description: Book created
  */
-router.put('/', (req, res) => {
+router.put('/', requireRole('admin'), (req, res) => {
   const { id, title, authorId } = req.body;
   Book.update(
     { title, author_id: authorId },
@@ -187,7 +187,7 @@ router.put('/', (req, res) => {
  *       204:
  *         description: Book deleted
  */
-router.delete('/:bookId', (req, res) => {
+router.delete('/:bookId', requireRole('admin'), (req, res) => {
   const { bookId } = req.params;
   Book.findById(bookId, { attributes: ['id'] }).then(book => book.destroy()).then(() => {
     res.status(204).send('Book deleted successfully');
@@ -214,7 +214,7 @@ router.delete('/:bookId', (req, res) => {
  *       200:
  *         description: A json object with information about most commented books
  */
-router.get('/most-commented/:limit', (req, res) => {
+router.get('/most-commented/:limit', requireRole('default'), (req, res) => {
   const { limit } = req.params;
   Book.findAll({
     include: [{
@@ -253,7 +253,7 @@ router.get('/most-commented/:limit', (req, res) => {
  *       200:
  *         description: A json object with information about a chosen book
  */
-router.get('/:bookId', (req, res) => {
+router.get('/:bookId', requireRole('default'), (req, res) => {
   const { bookId } = req.params;
   Book.findById(bookId, { attributes: ['id', 'title', 'cover'] }).then((book) => {
     res.send(book);
@@ -280,7 +280,7 @@ router.get('/:bookId', (req, res) => {
  *       200:
  *         description: A json array with information about books
  */
-router.get('/by-author/:author', (req, res) => {
+router.get('/by-author/:author', requireRole('default'), (req, res) => {
   const { author } = req.params;
   Book.findAll({
     include: [{
@@ -323,7 +323,7 @@ router.get('/by-author/:author', (req, res) => {
  *       200:
  *         description: A json array with information about books by rate
  */
-router.get('/sorted/by-rate', (req, res) => {
+router.get('/sorted/by-rate', requireRole('default'), (req, res) => {
   const { from, to } = req.query;
   Book.findAll({
     include: [{

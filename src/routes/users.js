@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { User, BookComment, Sequelize } = require('../db/models');
+const { requireRole } = require('../auth');
 
 const router = express.Router();
 
@@ -54,7 +55,7 @@ const router = express.Router();
  *       200:
  *         description: A json object with information about users
  */
-router.get('/highest-comments/:limit', (req, res) => {
+router.get('/highest-comments/:limit', requireRole('default'), (req, res) => {
   const { limit } = req.params;
 
   User.findAll({
@@ -99,7 +100,7 @@ router.get('/highest-comments/:limit', (req, res) => {
  *       201:
  *         description: Avatar uploaded
  */
-router.post('/avatar/:userId', (req, res) => {
+router.post('/avatar/:userId', requireRole('default'), (req, res) => {
   const { userId } = req.params;
 
   if (!req.files) {
@@ -143,7 +144,7 @@ router.post('/avatar/:userId', (req, res) => {
  *       201:
  *         description: User created
  */
-router.post('/', (req, res) => {
+router.post('/', requireRole('default'), (req, res) => {
   const {
     name, email, password, avatar, dateofbirth,
   } = req.body;
@@ -189,7 +190,7 @@ router.post('/', (req, res) => {
  *       201:
  *         description: User created
  */
-router.put('/', (req, res) => {
+router.put('/', requireRole('admin'), (req, res) => {
   const {
     id, name, email, password, dateofbirth,
   } = req.body;

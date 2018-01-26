@@ -1,5 +1,6 @@
 const express = require('express');
 const { BookRate } = require('../db/models');
+const { requireRole } = require('../auth');
 
 const router = express.Router();
 
@@ -46,7 +47,7 @@ const router = express.Router();
  *       201:
  *         description: Rate created
  */
-router.post('/', (req, res) => {
+router.post('/', requireRole('default'), (req, res) => {
   const { rate, bookId, userId } = req.body;
   BookRate.create({
     rate,
@@ -81,7 +82,7 @@ router.post('/', (req, res) => {
  *       201:
  *         description: Rate created
  */
-router.put('/', (req, res) => {
+router.put('/', requireRole('default'), (req, res) => {
   const { id, rate } = req.body;
   BookRate.update(
     { rate },

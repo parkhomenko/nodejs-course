@@ -13,6 +13,7 @@ router.post('/', (req, res) => {
   const { email, password } = req.body;
 
   User.findAll({
+    attributes: ['id'],
     where: {
       email,
       password,
