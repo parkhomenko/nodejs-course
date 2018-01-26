@@ -3,8 +3,8 @@
     "username": "root",
     "password": "qwerty",
     "database": "library",
-    "host": "127.0.0.1",
-    "port": 3307,
+    "host": "localhost",
+    "port": 3308,
     "dialect": "mysql"
   }
 }
