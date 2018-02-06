@@ -2,6 +2,7 @@ const express = require('express');
 const {
   Book, Author, BookRate, Sequelize,
 } = require('../db/models');
+const { requireRole } = require('../auth');
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ const router = express.Router();
  *       200:
  *         description: A json array with authors
  */
-router.get('/', (req, res) => {
+router.get('/', requireRole('default'), (req, res) => {
   Book.findAll({
     include: [{
       model: BookRate,

@@ -1,5 +1,6 @@
 const express = require('express');
 const { BookComment } = require('../db/models');
+const { requireRole } = require('../auth');
 
 const router = express.Router();
 
@@ -47,7 +48,7 @@ const router = express.Router();
  *       200:
  *         description: A json object with comment for a particular book
  */
-router.get('/:bookId', (req, res) => {
+router.get('/:bookId', requireRole('default'), (req, res) => {
   const { bookId } = req.params;
   BookComment.findAll({
     where: {
@@ -77,7 +78,7 @@ router.get('/:bookId', (req, res) => {
  *       201:
  *         description: Comment created
  */
-router.post('/', (req, res) => {
+router.post('/', requireRole('default'), (req, res) => {
   const { comment, bookId, userId } = req.body;
   BookComment.create({
     comment,
@@ -112,7 +113,7 @@ router.post('/', (req, res) => {
  *       201:
  *         description: Comment created
  */
-router.put('/', (req, res) => {
+router.put('/', requireRole('default'), (req, res) => {
   const { id, comment } = req.body;
   BookComment.update(
     { comment },
@@ -140,7 +141,7 @@ router.put('/', (req, res) => {
  *       204:
  *         description: Comment deleted
  */
-router.delete('/:commentId', (req, res) => {
+router.delete('/:commentId', requireRole('default'), (req, res) => {
   const { commentId } = req.params;
   BookComment.findById(commentId).then(comment => comment.destroy()).then(() => {
     res.status(204).send('Comment deleted successfully');

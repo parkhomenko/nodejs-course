@@ -8,7 +8,7 @@ const morgan = require('morgan');
 const winston = require('winston');
 const swaggerJSDoc = require('swagger-jsdoc');
 
-const passport = require('../auth');
+const auth = require('../auth');
 
 const login = require('../routes/login');
 const readme = require('../routes/readme');
@@ -38,7 +38,7 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options);
 
-app.use(passport.initialize());
+app.use(auth.initialize());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());

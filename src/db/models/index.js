@@ -29,6 +29,31 @@ const User = sequelize.define('users', {
   dateofbirth: Sequelize.DATE,
 });
 
+const Role = sequelize.define('roles', {
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+  name: Sequelize.STRING,
+});
+
+const UserRoles = sequelize.define('user_roles', {
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+  role_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'roles',
+      key: 'id',
+    },
+  },
+  user_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'id',
+    },
+  },
+});
+
 const Author = sequelize.define('authors', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   name: Sequelize.STRING,
@@ -60,11 +85,14 @@ BookComment.belongsTo(User, { foreignKey: 'user_id' });
 BookRate.belongsTo(Book, { foreignKey: 'book_id' });
 BookRate.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(BookComment, { foreignKey: 'user_id', sourceKey: 'id' });
+Role.belongsToMany(User, { through: UserRoles, foreignKey: 'role_id' });
+User.belongsToMany(Role, { through: UserRoles, foreignKey: 'user_id' });
 
 module.exports = {
   sequelize,
   Sequelize,
   User,
+  Role,
   Author,
   Book,
   BookRate,
