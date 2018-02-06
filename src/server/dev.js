@@ -18,7 +18,7 @@ const comments = require('../routes/comments');
 const rates = require('../routes/rates');
 const users = require('../routes/users');
 
-const port = 3000;
+const port = 3001;
 const app = express();
 
 const swaggerDefinition = {
@@ -27,7 +27,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'Demonstrating how to describe a RESTful API with Swagger',
   },
-  host: 'localhost:3000',
+  host: 'localhost:3001',
   basePath: '/',
 };
 

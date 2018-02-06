@@ -1,9 +1,13 @@
 ### Install dependencies
 npm install
 
-### Docker tasks
-npm db:start - Starts mysql container  
-npm db:stop - Stops mysql container
+### Database
+npm db:install - Creates a docker container from mysql image and creates a database
+npm db:uninstall - Deletes a mysql docker container
+
+### Migrations
+npm db:start - Starts mysql container and creates tables with data  
+npm db:stop - Stops mysql container and deletes data and tables from database
 
 ### Start dev server
 npm start
