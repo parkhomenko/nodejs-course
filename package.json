@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Node JS Lohika Course",
   "scripts": {
-    "start": "nodemon ./src/server/dev.js",
+    "start": "npm run dev",
     "test": "ava",
     "eslint": "./node_modules/.bin/eslint src test",
     "eslint:fix": "./node_modules/.bin/eslint src test --fix",
@@ -11,7 +11,9 @@
     "check": "npm-run-all --parallel eslint security test",
     "db:start": "npm-run-all db:start:container db:migrate db:seed",
     "db:stop": "npm-run-all db:seed:undo db:migrate:undo db:stop:container",
-    "db:start:container": "docker run --name mysql-server -p 3308:3306 -v C:\\Users\\sparkhomenko\\Projects\\Lohika\\books-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=qwerty -d mysql:latest || docker start mysql-server",
+    "db:install": "docker run --name mysql-server -p 3308:3306 -e MYSQL_DATABASE=library -e MYSQL_ROOT_PASSWORD=qwerty -d mysql:latest",
+    "db:uninstall": "docker rm mysql-server",
+    "db:start:container": "docker start mysql-server",
     "db:stop:container": "docker stop mysql-server",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
     "db:migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo",
@@ -21,7 +23,10 @@
     "precommit": "npm run check",
     "localtunnel": "lt --port 3000 --subdomain stas",
     "share": "npm-run-all --parallel start localtunnel",
-    "prod": "node ./src/server/prod.js"
+    "dev": "nodemon ./src/server/app.js",
+    "prod": "NODE_ENV=production node ./src/server/app.js",
+    "start:prod": "npm run db:migrate && npm run db:seed || true && prod",
+    "start:lb": "docker-compose up --build --scale library=3"
   },
   "author": "Stanislav Parkhomenko",
   "license": "MIT",
@@ -55,13 +60,15 @@
     "eslint-plugin-import": "^2.8.0",
     "husky": "^0.14.3",
     "nodemon": "^1.14.3",
-    "npm-run-all": "^4.1.2"
+    "npm-run-all": "^4.1.2",
+    "supertest": "^3.0.0"
   },
   "nodemonConfig": {
     "ignore": [
       "test/*",
       "docs/*",
-      "static/*"
+      "static/*",
+      "loadbalancer/*"
     ],
     "delay": "2500"
   }
