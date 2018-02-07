@@ -110,14 +110,6 @@ app.use((err, req, res) => {
     });
 });
 
-/* app.listen(port, (err) => {
-  if (err) {
-    winston.log('error', err);
-  } else {
-    open(`http://localhost:${port}`);
-  }
-}); */
-
 const httpServer = http.createServer(app);
 httpServer.listen(port);
 if (isProduction) {

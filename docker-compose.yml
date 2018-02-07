@@ -25,7 +25,7 @@ services:
       library-cluster:
         aliases:
           - library
-    command: ["./wait-for-it.sh", "mysql-server-host:3306", "--", "npm", "start"]
+    command: ["./wait-for-it.sh", "mysql-server-host:3306", "--", "npm", "run", "start:prod"]
 
   load-balancer:
     build: ./load-balancer

@@ -25,7 +25,8 @@
     "share": "npm-run-all --parallel start localtunnel",
     "dev": "nodemon ./src/server/app.js",
     "prod": "NODE_ENV=production node ./src/server/app.js",
-    "start:prod": "npm run db:migrate && npm run db:seed || true && prod"
+    "start:prod": "npm run db:migrate && npm run db:seed || true && prod",
+    "start:lb": "docker-compose up --build --scale library=3"
   },
   "author": "Stanislav Parkhomenko",
   "license": "MIT",

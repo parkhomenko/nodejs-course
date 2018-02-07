@@ -13,7 +13,7 @@ npm db:stop - Stops mysql container and deletes data and tables from database
 npm start
 
 ### Start prod server
-npm run prod
+npm run start:lb
 
 ### Start all validations
 npm run check
