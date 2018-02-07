@@ -78,8 +78,8 @@ router.post('/', requireRole('admin'), (req, res) => {
   Book.create({
     title,
     author_id: authorId,
-  }).then(() => {
-    res.status(201).send('Book created successfully');
+  }).then((book) => {
+    res.status(201).send({ book_id: book.id });
   });
 });
 

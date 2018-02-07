@@ -14,5 +14,13 @@
     "host": "mysql-server-host",
     "port": 3306,
     "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "qwerty",
+    "database": "library",
+    "host": "localhost",
+    "port": 3307,
+    "dialect": "mysql"
   }
 }
